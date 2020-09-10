@@ -46,15 +46,15 @@ player = Player(room['outside'])
 valid_input = set("neswq")
 while True:
     player.position.enter()
-    direction = input("Where would you like to go?\n").strip().lower()
+    command = input("Where would you like to go?\n").strip().lower()
     try:
-        if direction not in valid_input:
+        if command not in valid_input:
             raise TypeError
-        elif direction == 'q':
+        elif command == 'q':
             print("Thank you for playing")
             break
         else:
-            player.move(direction)
+            player.move(command)
 
     except TypeError:
         print("I do not understand that direction")
