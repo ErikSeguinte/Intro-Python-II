@@ -57,6 +57,19 @@ def get(player: Player):
 
     return get_item
 
+
+def drop(player: Player):
+    def drop_item(item: str):
+        room = player.position
+        if item in player.items.keys():
+            new_item = player.items.pop(item)
+            room.items[item] = new_item
+            print("dropped item")
+        else:
+            raise errors.ItemNotInInventory(item)
+
+    return drop_item
+
 def print_output_response(s:str):
     print(s)
     sleep(1)
@@ -71,15 +84,18 @@ def print_output_response(s:str):
 # Make a new player object that is currently in the 'outside' room.
 player = Player(room["outside"])
 get_item = get(player)
+drop_item = drop(player)
 
 # Write a loop that:
 
 
 valid_input = set("neswqi")
-valid_input.add("get")
+valid_input.update({"get", "drop"})
+
 while True:
     player.position.enter()
     command = input("\nWhere would you like to go?\n").strip().lower().split(" ")
+    command.append(" ")
     try:
         if command[0] not in valid_input:
             raise errors.CommandNotRecognizedError(command[0])
@@ -87,7 +103,6 @@ while True:
             print("Thank you for playing")
             break
         elif command[0] == "i":
-            # TODO Inventory
             item: Item
             print("Inventory")
             print("=========")
@@ -100,8 +115,7 @@ while True:
             if command[0] == "get":
                 get_item(command[1])
             elif command[0] == "drop":
-                # TODO DROP
-                raise NotImplemented
+                drop_item(command[1])
             else:
                 player.move(command[0])
 
@@ -113,9 +127,13 @@ while True:
         print_output_response("You cannot go that way")
         continue
 
+    except errors.ItemNotInInventory:
+        print_output_response("You do not have that item")
+        continue
     except errors.ItemDoesNotExistError:
         print_output_response("That does not exist here")
         continue
+
 
 # * Prints the current room name
 # * Prints the current description (the textwrap module might be useful here).
