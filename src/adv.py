@@ -88,7 +88,14 @@ while True:
             break
         elif command[0] == "i":
             # TODO Inventory
-            raise NotImplemented
+            item: Item
+            print("Inventory")
+            print("=========")
+            for k, item in player.items.items():
+                print(item.name)
+
+            print()
+            print("=========")
         else:
             if command[0] == "get":
                 get_item(command[1])
