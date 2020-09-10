@@ -2,6 +2,7 @@
 # currently.
 
 from room import Room, Item
+import errors
 
 
 class Player:
@@ -13,5 +14,5 @@ class Player:
     def move(self, direction: str):
         try:
             self.position = self.position.get_next(direction)
-        except ValueError:
-            raise ValueError
+        except errors.NoPathExists:
+            raise errors.NoPathExists(direction)

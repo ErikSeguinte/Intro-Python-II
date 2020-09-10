@@ -1,6 +1,9 @@
 class ItemDoesNotExistError(ValueError):
     pass
 
+class ItemNotInInventory(ItemDoesNotExistError):
+    pass
+
 
 class CommandNotRecognizedError(TypeError):
     pass

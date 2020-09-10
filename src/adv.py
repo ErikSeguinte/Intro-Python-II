@@ -1,4 +1,6 @@
 from player import Player, Room, Item
+import errors
+from time import sleep
 
 # Declare all the rooms
 
@@ -51,9 +53,15 @@ def get(player: Player):
             player.items[item] = new_item
             print("got item")
         else:
-            print(f"no {item} here")
+            raise errors.ItemDoesNotExistError(item)
 
     return get_item
+
+def print_output_response(s:str):
+    print(s)
+    sleep(1)
+    print("\n" *2)
+
 
 
 #
@@ -67,29 +75,40 @@ get_item = get(player)
 # Write a loop that:
 
 
-valid_input = set("neswq")
+valid_input = set("neswqi")
 valid_input.add("get")
 while True:
     player.position.enter()
     command = input("\nWhere would you like to go?\n").strip().lower().split(" ")
     try:
         if command[0] not in valid_input:
-            raise TypeError
-        elif command[0] == "q":
+            raise errors.CommandNotRecognizedError(command[0])
+        if command[0] == "q":
             print("Thank you for playing")
             break
+        elif command[0] == "i":
+            # TODO Inventory
+            raise NotImplemented
         else:
             if command[0] == "get":
                 get_item(command[1])
+            elif command[0] == "drop":
+                # TODO DROP
+                raise NotImplemented
             else:
                 player.move(command[0])
 
-    except TypeError:
-        print("I do not understand that direction")
+    except errors.CommandNotRecognizedError:
+        print_output_response("I do not understand that command")
         continue
 
-    except ValueError:
-        print("You cannot go that way")
+    except errors.NoPathExists:
+        print_output_response("You cannot go that way")
+        continue
+
+    except errors.ItemDoesNotExistError:
+        print_output_response("That does not exist here")
+        continue
 
 # * Prints the current room name
 # * Prints the current description (the textwrap module might be useful here).

@@ -1,7 +1,7 @@
 # Implement a class to hold room information. This should have name and
 # description attributes.
 from item import Item
-
+import errors
 
 class Room:
     def __init__(self, name, description):
@@ -26,7 +26,7 @@ class Room:
             }
 
         if not self.connections[direction]:
-            raise ValueError
+            raise errors.NoPathExists(direction)
         return self.connections[direction]
 
     def enter(self):
