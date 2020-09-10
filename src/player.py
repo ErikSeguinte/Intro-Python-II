@@ -10,7 +10,7 @@ class Player:
 
         self.items = {}
 
-    def move(self, direction:str):
+    def move(self, direction: str):
         try:
             self.position = self.position.get_next(direction)
         except ValueError:

@@ -3,48 +3,56 @@ from player import Player, Room, Item
 # Declare all the rooms
 
 room = {
-    'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons"),
-
-    'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
-passages run north and east."""),
-
-    'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
+    "outside": Room("Outside Cave Entrance", "North of you, the cave mount beckons"),
+    "foyer": Room(
+        "Foyer",
+        """Dim light filters in from the south. Dusty
+passages run north and east.""",
+    ),
+    "overlook": Room(
+        "Grand Overlook",
+        """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
-the distance, but there is no way across the chasm."""),
-
-    'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
-to north. The smell of gold permeates the air."""),
-
-    'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
+the distance, but there is no way across the chasm.""",
+    ),
+    "narrow": Room(
+        "Narrow Passage",
+        """The narrow passage bends here from west
+to north. The smell of gold permeates the air.""",
+    ),
+    "treasure": Room(
+        "Treasure Chamber",
+        """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south."""),
+earlier adventurers. The only exit is to the south.""",
+    ),
 }
 
 
 # Link rooms together
 
-room['outside'].n_to = room['foyer']
-room['foyer'].s_to = room['outside']
-room['foyer'].n_to = room['overlook']
-room['foyer'].e_to = room['narrow']
-room['overlook'].s_to = room['foyer']
-room['narrow'].w_to = room['foyer']
-room['narrow'].n_to = room['treasure']
-room['treasure'].s_to = room['narrow']
+room["outside"].n_to = room["foyer"]
+room["foyer"].s_to = room["outside"]
+room["foyer"].n_to = room["overlook"]
+room["foyer"].e_to = room["narrow"]
+room["overlook"].s_to = room["foyer"]
+room["narrow"].w_to = room["foyer"]
+room["narrow"].n_to = room["treasure"]
+room["treasure"].s_to = room["narrow"]
 
-room['foyer'].items['sword'] = Item('sword')
+room["foyer"].items["sword"] = Item("sword")
 
-def get(player:Player):
 
-    def get_item(item:str):
+def get(player: Player):
+    def get_item(item: str):
         room = player.position
         if item in room.items.keys():
             new_item = room.items.pop(item)
             player.items[item] = new_item
-            print('got item')
+            print("got item")
         else:
-            print(f'no {item} here')
+            print(f"no {item} here")
+
     return get_item
 
 
@@ -53,7 +61,7 @@ def get(player:Player):
 #
 
 # Make a new player object that is currently in the 'outside' room.
-player = Player(room['outside'])
+player = Player(room["outside"])
 get_item = get(player)
 
 # Write a loop that:
@@ -63,15 +71,15 @@ valid_input = set("neswq")
 valid_input.add("get")
 while True:
     player.position.enter()
-    command = input("\nWhere would you like to go?\n").strip().lower().split(' ')
+    command = input("\nWhere would you like to go?\n").strip().lower().split(" ")
     try:
         if command[0] not in valid_input:
             raise TypeError
-        elif command[0] == 'q':
+        elif command[0] == "q":
             print("Thank you for playing")
             break
         else:
-            if command[0] == 'get':
+            if command[0] == "get":
                 get_item(command[1])
             else:
                 player.move(command[0])

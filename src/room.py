@@ -2,8 +2,8 @@
 # description attributes.
 from item import Item
 
-class Room:
 
+class Room:
     def __init__(self, name, description):
         self.name = name
         self.description = description
@@ -16,7 +16,7 @@ class Room:
 
         self.connections = None
 
-    def get_next(self, direction:str):
+    def get_next(self, direction: str):
         if not self.connections:
             self.connections = {
                 "n": self.n_to,
@@ -32,4 +32,4 @@ class Room:
     def enter(self):
         print(f"{self.name}\n{self.description}")
         for k, v in self.items.items():
-            print(f'There is a {v.name} here')
+            print(f"There is a {v.name} here")
