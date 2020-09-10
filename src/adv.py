@@ -1,4 +1,4 @@
-from player import Player, Room
+from player import Player, Room, Item
 
 # Declare all the rooms
 
@@ -33,20 +33,37 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+room['foyer'].items['sword'] = Item('sword')
+
+def get(player:Player):
+
+    def get_item(item:str):
+        room = player.position
+        if item in room.items.keys():
+            new_item = room.items.pop(item)
+            player.items[item] = new_item
+            print('got item')
+        else:
+            print(f'no {item} here')
+    return get_item
+
+
 #
 # Main
 #
 
 # Make a new player object that is currently in the 'outside' room.
 player = Player(room['outside'])
+get_item = get(player)
 
 # Write a loop that:
 
 
 valid_input = set("neswq")
+valid_input.add("get")
 while True:
     player.position.enter()
-    command = input("Where would you like to go?\n").strip().lower().split(' ')
+    command = input("\nWhere would you like to go?\n").strip().lower().split(' ')
     try:
         if command[0] not in valid_input:
             raise TypeError
@@ -54,7 +71,10 @@ while True:
             print("Thank you for playing")
             break
         else:
-            player.move(command[0])
+            if command[0] == 'get':
+                get_item(command[1])
+            else:
+                player.move(command[0])
 
     except TypeError:
         print("I do not understand that direction")

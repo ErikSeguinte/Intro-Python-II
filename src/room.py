@@ -1,5 +1,6 @@
 # Implement a class to hold room information. This should have name and
 # description attributes.
+from item import Item
 
 class Room:
 
@@ -10,6 +11,8 @@ class Room:
         self.w_to = None
         self.s_to = None
         self.e_to = None
+
+        self.items = {}
 
         self.connections = None
 
@@ -28,3 +31,5 @@ class Room:
 
     def enter(self):
         print(f"{self.name}\n{self.description}")
+        for k, v in self.items.items():
+            print(f'There is a {v.name} here')
