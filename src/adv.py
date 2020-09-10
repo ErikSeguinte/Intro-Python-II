@@ -1,4 +1,4 @@
-from src.player import Player, Room
+from player import Player, Room
 
 # Declare all the rooms
 
@@ -46,15 +46,15 @@ player = Player(room['outside'])
 valid_input = set("neswq")
 while True:
     player.position.enter()
-    command = input("Where would you like to go?\n").strip().lower()
+    command = input("Where would you like to go?\n").strip().lower().split(' ')
     try:
-        if command not in valid_input:
+        if command[0] not in valid_input:
             raise TypeError
-        elif command == 'q':
+        elif command[0] == 'q':
             print("Thank you for playing")
             break
         else:
-            player.move(command)
+            player.move(command[0])
 
     except TypeError:
         print("I do not understand that direction")
